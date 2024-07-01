@@ -29,6 +29,7 @@ function Autocomplete() {
   useEffect(() => {
     if (searchParam.length >= 3 && searchParam != clickedResult?.title)
       fetchAutocompleteSuggestions();
+    if (searchParam.length == 0) setAutocompleteResult([]);
   }, [searchParam]);
 
   const autocompleteResultButtonHandler = (data) => {
