@@ -1,8 +1,13 @@
 import React from "react";
 import Home from "./pages/Home";
+import { RecoilRoot } from "recoil";
 
 function App() {
-  return <Home />;
+  return (
+    <RecoilRoot>
+      <Home />
+    </RecoilRoot>
+  );
 }
 
 export default App;
