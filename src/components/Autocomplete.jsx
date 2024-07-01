@@ -4,10 +4,11 @@ import { debounce } from "lodash";
 
 function Autocomplete() {
   const [searchParam, setSearchParam] = useState("");
+  const [clickedResult, setClickedResult] = useState("");
   const [songData, setSongData] = useState([]);
 
-  const fetchSongData = debounce((value) => {
-    fetch(`http://localhost:3000/?search=${value}`, {
+  const fetchSongData = debounce(() => {
+    fetch(`http://localhost:3000/search?keyword=${searchParam}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,13 +20,13 @@ function Autocomplete() {
       });
   }, 1000);
 
-  const handleInputChange = (value) => {
-    setSearchParam(value);
-
-    if (value.length >= 3) fetchSongData(value);
-  };
+  useEffect(() => {
+    if (searchParam.length >= 3 && searchParam != clickedResult)
+      fetchSongData();
+  }, [searchParam]);
 
   const searchResultButtonHandler = (title) => {
+    setClickedResult(title);
     setSearchParam(title);
     setSongData([]);
   };
@@ -37,7 +38,7 @@ function Autocomplete() {
         placeholder="Enter Author/Album/Song name....."
         value={searchParam}
         onChange={(e) => {
-          handleInputChange(e.target?.value);
+          setSearchParam(e.target?.value);
         }}
       />
 
