@@ -1,6 +1,7 @@
 import React from "react";
 import Autocomplete from "../components/Autocomplete";
 import SearchResult from "../components/SearchResult";
+import "../styles/Home.css";
 
 function Home() {
   return (

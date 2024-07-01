@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { useRecoilState, useRecoilCallback } from "recoil";
 import { autocompleteResults } from "../store/atom";
+import "../styles/Autocomplete.css";
 
 function Autocomplete() {
   const [searchParam, setSearchParam] = useState("");

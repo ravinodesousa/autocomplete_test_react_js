@@ -1,6 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { autocompleteResults } from "../store/atom";
+import "../styles/SearchResult.css";
 
 function SearchResult() {
   const searchResult = useRecoilValue(autocompleteResults);
