@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
+import { useRecoilState, useRecoilCallback } from "recoil";
+import { autocompleteResults } from "../store/atom";
 
 function Autocomplete() {
   const [searchParam, setSearchParam] = useState("");
   const [clickedResult, setClickedResult] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
+
+  const [autocompleteResult, setAutocompleteResult] =
+    useRecoilState(autocompleteResults);
 
   const fetchAutocompleteSuggestions = debounce(() => {
     fetch(`http://localhost:3000/search/autocomplete?keyword=${searchParam}`, {
@@ -43,7 +48,7 @@ function Autocomplete() {
     )
       .then((res) => res.json())
       .then((response) => {
-        // if (response?.data) setSuggestions(response?.data);
+        if (response?.data) setAutocompleteResult(response?.data);
       });
   }, [clickedResult]);
 
@@ -59,7 +64,7 @@ function Autocomplete() {
       />
 
       {suggestions.length > 0 && (
-        <div className="search-result-container">
+        <div className="suggestion-result-container">
           {suggestions?.map((item, idx) => (
             <button
               key={idx}
