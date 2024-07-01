@@ -1,5 +1,6 @@
 import React from "react";
 import Autocomplete from "../components/Autocomplete";
+import SearchResult from "../components/SearchResult";
 
 function Home() {
   return (
@@ -7,6 +8,7 @@ function Home() {
       <div className="card">
         <span className="card-title">Search for music....</span>
         <Autocomplete />
+        <SearchResult />
       </div>
     </div>
   );
