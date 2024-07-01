@@ -4,11 +4,11 @@ import { debounce } from "lodash";
 
 function Autocomplete() {
   const [searchParam, setSearchParam] = useState("");
-  const [clickedResult, setClickedResult] = useState("");
-  const [songData, setSongData] = useState([]);
+  const [clickedResult, setClickedResult] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
 
-  const fetchSongData = debounce(() => {
-    fetch(`http://localhost:3000/search?keyword=${searchParam}`, {
+  const fetchAutocompleteSuggestions = debounce(() => {
+    fetch(`http://localhost:3000/search/autocomplete?keyword=${searchParam}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -16,20 +16,36 @@ function Autocomplete() {
     })
       .then((res) => res.json())
       .then((response) => {
-        if (response?.data) setSongData(response?.data);
+        if (response?.data) setSuggestions(response?.data);
       });
   }, 1000);
 
   useEffect(() => {
-    if (searchParam.length >= 3 && searchParam != clickedResult)
-      fetchSongData();
+    if (searchParam.length >= 3 && searchParam != clickedResult?.title)
+      fetchAutocompleteSuggestions();
   }, [searchParam]);
 
-  const searchResultButtonHandler = (title) => {
-    setClickedResult(title);
-    setSearchParam(title);
-    setSongData([]);
+  const autocompleteResultButtonHandler = (data) => {
+    setClickedResult(data);
+    setSearchParam(data?.title);
+    setSuggestions([]);
   };
+
+  useEffect(() => {
+    fetch(
+      `http://localhost:3000/search/result?keyword=${clickedResult?.title}&type=${clickedResult?.type}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((response) => {
+        // if (response?.data) setSuggestions(response?.data);
+      });
+  }, [clickedResult]);
 
   return (
     <div>
@@ -42,13 +58,13 @@ function Autocomplete() {
         }}
       />
 
-      {songData.length > 0 && (
+      {suggestions.length > 0 && (
         <div className="search-result-container">
-          {songData?.map((item, idx) => (
+          {suggestions?.map((item, idx) => (
             <button
               key={idx}
               onClick={() => {
-                searchResultButtonHandler(item?.title);
+                autocompleteResultButtonHandler(item);
               }}
             >
               {item?.title}
