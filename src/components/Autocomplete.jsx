@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import { useRecoilState, useRecoilCallback } from "recoil";
 import { autocompleteResults } from "../store/atom";
 import "../styles/Autocomplete.css";
+import { BASE_URL } from "../utils/constants";
 
 function Autocomplete() {
   const [searchParam, setSearchParam] = useState("");
@@ -14,7 +15,7 @@ function Autocomplete() {
     useRecoilState(autocompleteResults);
 
   const fetchAutocompleteSuggestions = debounce(() => {
-    fetch(`http://localhost:3000/search/autocomplete?keyword=${searchParam}`, {
+    fetch(`${BASE_URL}/search/autocomplete?keyword=${searchParam}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +41,7 @@ function Autocomplete() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:3000/search/result?keyword=${clickedResult?.title}&type=${clickedResult?.type}`,
+      `${BASE_URL}/search/result?keyword=${clickedResult?.title}&type=${clickedResult?.type}`,
       {
         method: "GET",
         headers: {
