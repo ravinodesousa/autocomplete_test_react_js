@@ -58,7 +58,7 @@ function Autocomplete() {
     <div>
       <input
         className="custom-input"
-        placeholder="Enter Author/Album/Song name....."
+        placeholder="Enter Artist/Album/Song name....."
         value={searchParam}
         onChange={(e) => {
           setSearchParam(e.target?.value);

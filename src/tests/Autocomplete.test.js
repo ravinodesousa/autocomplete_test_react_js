@@ -7,7 +7,7 @@ describe("Autocomplete component", () => {
   it("renders without crashing", () => {
     const { getByPlaceholderText } = render(<Autocomplete />);
     expect(
-      getByPlaceholderText("Enter Author/Album/Song name.....")
+      getByPlaceholderText("Enter Artist/Album/Song name.....")
     ).toBeInTheDocument();
   });
 });
